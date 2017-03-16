@@ -110,8 +110,11 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.ColumnText;
 import com.lowagie.text.pdf.FontMapper;
 import com.lowagie.text.pdf.PdfAction;
+import com.lowagie.text.pdf.PdfArray;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfDestination;
+import com.lowagie.text.pdf.PdfDictionary;
+import com.lowagie.text.pdf.PdfICCBased;
 import com.lowagie.text.pdf.PdfName;
 import com.lowagie.text.pdf.PdfOutline;
 import com.lowagie.text.pdf.PdfTemplate;
@@ -484,8 +487,15 @@ public class JRPdfExporter extends JRAbstractExporter
 					permissions
 					);
 			}
-			
-			pdfWriter.setRgbTransparencyBlending(true);
+
+			// >>> modification BSI Business Systems Integration AG 20110701 (code to support PDF/A-1)
+			// pdfWriter.setRgbTransparencyBlending(true); // original code
+			Boolean rgbTransparencyBlending = (Boolean) parameters.get(JRPdfExporterParameter.PDF_RGB_TRANSPARENCY_BLENDING);
+			if (rgbTransparencyBlending == null) {
+				rgbTransparencyBlending = true;
+			}
+			pdfWriter.setRgbTransparencyBlending(rgbTransparencyBlending);
+			// <<< modification BSI Business Systems Integration AG 20110701 (code to support PDF/A-1)
 
 			if (printScaling != null) 
 			{
@@ -531,8 +541,58 @@ public class JRPdfExporter extends JRAbstractExporter
 				document.addCreator("JasperReports (" + jasperPrint.getName() + ")");
 			}
 
+			// >>> modification BSI Business Systems Integration AG 20110701 (code to support PDF/A-1)
+			Integer pdfXConformance = (Integer)parameters.get(JRPdfExporterParameter.PDF_X_CONFORMANCE);
+            if( pdfXConformance!= null )
+            {
+                pdfWriter.setPDFXConformance(pdfXConformance.intValue());
+            }
+
+
+            Boolean isCreateXmpMetadata = (Boolean)parameters.get(JRPdfExporterParameter.PDF_CREATE_XMP_METADATA);
+            if( isCreateXmpMetadata!=null && isCreateXmpMetadata.booleanValue() )
+            {
+                pdfWriter.createXmpMetadata();
+            }
+			// <<< modification BSI Business Systems Integration AG 20110701 (code to support PDF/A-1)
+
 			document.open();
 			
+			// >>> modification BSI Business Systems Integration AG 20110701 (code to support PDF/A-1)
+			PdfDictionary pdfDictionary = (PdfDictionary)parameters.get(JRPdfExporterParameter.PDF_DICTIONARY);
+            PdfICCBased pdfICCBased = (PdfICCBased)parameters.get(JRPdfExporterParameter.PDF_ICC_BASED);
+            PdfDictionary pdfStructTree = (PdfDictionary)parameters.get(JRPdfExporterParameter.PDF_STRUCT_TREE_ROOT);
+            PdfDictionary pdfMarkInfo = (PdfDictionary)parameters.get(JRPdfExporterParameter.PDF_MARK_INFO);
+
+            // can only set up Outputintent if both pdfDictionary and pdfICCBased are set
+            if(pdfDictionary != null && pdfICCBased != null )
+            {
+                pdfDictionary.put(PdfName.DESTOUTPUTPROFILE,
+                        pdfWriter.addToBody(pdfICCBased).getIndirectReference());
+                pdfWriter.getExtraCatalog().put(PdfName.OUTPUTINTENTS, new PdfArray(pdfDictionary));
+            }
+            else if( ( pdfDictionary == null && pdfICCBased != null ) ||
+                    ( pdfDictionary != null && pdfICCBased == null ) )
+
+            {
+                throw new JRException("PDF Document error : " +
+                        "JRPdfExporterParameter.PDF_DICTIONARY and JRPdfExporterParameter.PDF_ICC_BASED " +
+                        "must be set to setup pdf outputintents");
+            }
+
+            if(pdfStructTree != null )
+            {
+                // Structure Tree Root
+                pdfWriter.getExtraCatalog().put(PdfName.STRUCTTREEROOT, pdfStructTree);
+            }
+
+            if(pdfMarkInfo != null )
+            {
+                // Mark Info
+                pdfWriter.getExtraCatalog().put(PdfName.MARKINFO, pdfMarkInfo);
+            }
+			// <<< modification BSI Business Systems Integration AG 20110701 (code to support PDF/A-1)
+
 			if(pdfJavaScript != null)
 			{
 				pdfWriter.addJavaScript(pdfJavaScript);

@@ -2,10 +2,10 @@
 
 	<description>Helps build the JasperReports distribution files.</description>
 
-	<property name="version" value="4.0.1"/>
+	<property name="version" value="4.0.1-BSI1"/>
 
 	<target name="compile" description="Compiles the java source files of the library.">
-		<mkdir dir="./build/classes"/> 
+		<mkdir dir="./build/classes"/>
 		<javac destdir="./build/classes" debug="true" optimize="false" deprecation="true" target="1.5" source="1.5" encoding="ISO-8859-1">
 			<classpath>
 				<pathelement location="./build/classes"/>
@@ -15,7 +15,7 @@
 			</classpath>
 			<src path="./src"/>
 		</javac>
-		
+
 		<copy todir="./build/classes">
 			<fileset dir="./src">
 				<include name="**/*.dtd"/>
@@ -29,9 +29,9 @@
 			</fileset>
 		</copy>
 	</target>
-	
+
 	<target name="antlr.generate" description="Generates source files for ANTLR grammars">
-		<mkdir dir="./build/antlr-generated-sources"/> 
+		<mkdir dir="./build/antlr-generated-sources"/>
 		<antlr target="src/net/sf/jasperreports/olap/mapping/mapping.g">
 			<classpath>
 				<pathelement path="./lib/antlr-2.7.5.jar"/>
@@ -40,7 +40,7 @@
 	</target>
 
 	<target name="jar" depends="compile, javaflow, applet, fonts" description="Builds the JasperReports JAR files.">
-		<mkdir dir="./dist"/> 
+		<mkdir dir="./dist"/>
 		<jar jarfile="./dist/jasperreports-${version}.jar" manifest="src/META-INF/MANIFEST.MF">
 			<fileset dir="./build/classes"/>
 			<fileset dir="./">
@@ -79,7 +79,7 @@
 			<include name="net/sf/jasperreports/engine/fill/JRContinuationSubreportRunner.class"/>
 		</javaflow>
 
-		<mkdir dir="./dist"/> 
+		<mkdir dir="./dist"/>
 		<jar jarfile="./dist/jasperreports-javaflow-${version}.jar" manifest="src/META-INF/MANIFEST.MF">
 			<fileset dir="./build/javaflow"/>
 			<fileset dir="./">
@@ -88,9 +88,9 @@
 			</fileset>
 		</jar>
 	</target>
-	
+
 	<target name="applet" depends="compile" description="Builds the jasperreports-applet.jar file.">
-		<mkdir dir="./dist"/> 
+		<mkdir dir="./dist"/>
 		<jar jarfile="./dist/jasperreports-applet-${version}.jar">
 			<manifest>
 				<attribute name="Built-By" value="Jaspersoft Corporation"/>
@@ -99,10 +99,10 @@
 					<attribute name="Specification-Version" value="${version}"/>
 					<attribute name="Specification-Vendor" value="Jaspersoft Corporation"/>
 					<attribute name="Implementation-Title" value="net.sf.jasperreports.engine"/>
-					<attribute name="Implementation-Version" value="${version}"/> 
+					<attribute name="Implementation-Version" value="${version}"/>
 					<attribute name="Implementation-Vendor" value="Jaspersoft Corporation"/>
 				</section>
-			</manifest>		
+			</manifest>
 			<fileset dir="./build/classes">
 				<include name="**/default.jasperreports.properties"/>
 				<include name="**/net/sf/jasperreports/charts/util/CategoryLabelGenerator.class"/>
@@ -276,7 +276,7 @@
 	</target>
 
 	<target name="fonts" description="Builds the JAR containing the JasperReports default font extension.">
-		<mkdir dir="./dist"/> 
+		<mkdir dir="./dist"/>
 		<jar jarfile="./dist/jasperreports-fonts-${version}.jar">
 			<manifest>
 				<attribute name="Built-By" value="Jaspersoft Corporation"/>
@@ -285,10 +285,10 @@
 					<attribute name="Specification-Version" value="${version}"/>
 					<attribute name="Specification-Vendor" value="Jaspersoft Corporation"/>
 					<attribute name="Implementation-Title" value="net.sf.jasperreports.fonts"/>
-					<attribute name="Implementation-Version" value="${version}"/> 
+					<attribute name="Implementation-Version" value="${version}"/>
 					<attribute name="Implementation-Vendor" value="Jaspersoft Corporation"/>
 				</section>
-			</manifest>		
+			</manifest>
 			<fileset dir="./demo/fonts">
 				<exclude name="**/log4j.properties"/>
 				<exclude name="**/readme.txt"/>
@@ -296,7 +296,7 @@
 			</fileset>
 		</jar>
 	</target>
-	
+
 	<target name="clean" description="Deletes all build files.">
 		<delete dir="./build"/>
 		<delete dir="./dist"/>
@@ -304,7 +304,7 @@
 	</target>
 
 	<target name="javadoc" depends="compile" description="Compiles the library API documentation.">
-		<mkdir dir="./dist/docs/api"/> 
+		<mkdir dir="./dist/docs/api"/>
 		<delete dir="./dist/docs/api/net"/>
 		<delete>
 			<fileset dir="./dist/docs/api" includes="**/*.*" />
@@ -351,7 +351,7 @@
 	<property name="svn" value="jr-4-0-1"/>
 
 	<target name="schemaref" description="Generates the Schema Reference.">
-		<mkdir dir="./dist/docs"/> 
+		<mkdir dir="./dist/docs"/>
 		<copy todir="./dist/docs">
 			<fileset dir="docs">
 				<include name="resources/*.*"/>
@@ -368,9 +368,9 @@
 			</classpath>
 		</xslt>
 	</target>
-	
+
 	<target name="configref" description="Generates the Configuration Reference.">
-		<mkdir dir="./dist/docs"/> 
+		<mkdir dir="./dist/docs"/>
 		<copy todir="./dist/docs">
 			<fileset dir="docs">
 				<include name="resources/*.*"/>
@@ -387,9 +387,9 @@
 			</classpath>
 		</xslt>
 	</target>
-	
+
 	<target name="sampleref" description="Generates the Sample Reference.">
-		<mkdir dir="./dist/docs"/> 
+		<mkdir dir="./dist/docs"/>
 		<copy todir="./dist/docs">
 			<fileset dir="docs">
 				<include name="resources/*.*"/>
@@ -405,7 +405,7 @@
 				<pathelement location="./build/classes"/>
 			</classpath>
 		</xslt>
-		<mkdir dir="./dist/docs/sample.reference"/> 
+		<mkdir dir="./dist/docs/sample.reference"/>
 		<xslt basedir="demo/samples" destdir="dist/docs/sample.reference" style="./docs/sample.xsl">
 			<param name="sf.net" expression="${sf.net}"/>
 			<param name="version" expression="${version}"/>
@@ -425,7 +425,7 @@
 			</fileset>
 		</copy>
 	</target>
-	
+
 	<target name="docs" depends="javadoc, schemaref, configref, sampleref" description="Generates all documentation."/>
 
 </project>

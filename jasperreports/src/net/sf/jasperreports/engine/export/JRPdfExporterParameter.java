@@ -339,7 +339,73 @@ public class JRPdfExporterParameter extends JRExporterParameter
 	 * @see net.sf.jasperreports.engine.JRAnchor#getBookmarkLevel()
 	 * @since 3.7.3
 	 */
-	public static final String PROPERTY_COLLAPSE_MISSING_BOOKMARK_LEVELS = 
-		JRProperties.PROPERTY_PREFIX + "export.pdf.collapse.missing.bookmark.levels";
-	
+    public static final String PROPERTY_COLLAPSE_MISSING_BOOKMARK_LEVELS = JRProperties.PROPERTY_PREFIX + "export.pdf.collapse.missing.bookmark.levels";
+
+    // >>> modification BSI Business Systems Integration AG 20110701 (code to
+    // support PDF/A-1)
+    /**
+     * <p>
+     * [contributed by BSI for PDF/A-1 support]
+     * </p>
+     * The Conformance level of the PDF document, as Integer.
+     */
+    public static final JRPdfExporterParameter PDF_X_CONFORMANCE = new JRPdfExporterParameter("PDF X Conformance");
+
+    /**
+     * <p>
+     * [contributed by BSI for PDF/A-1 support]
+     * </p>
+     * Specifies whether the exporter should put XMP metadata in the generated
+     * PDF.
+     */
+    public static final JRPdfExporterParameter PDF_CREATE_XMP_METADATA = new JRPdfExporterParameter("PDF Create XMP Metadata");
+
+    /**
+     * <p>
+     * [contributed by BSI for PDF/A-1 support]
+     * </p>
+     * Specifies the PDF Dictionary to be used when genering the PDF, as
+     * com.lowagie.text.pdf.PdfDictionary.
+     */
+    public static final JRPdfExporterParameter PDF_DICTIONARY = new JRPdfExporterParameter("PDF Dictionary");
+
+    /**
+     * <p>
+     * [contributed by BSI for PDF/A-1 support]
+     * </p>
+     * Specifies the IIC base to be used when generating the PDF, as
+     * com.lowagie.text.pdf.PdfICCBased.
+     */
+    public static final JRPdfExporterParameter PDF_ICC_BASED = new JRPdfExporterParameter("PDF ICC Based");
+
+    /**
+     * <p>
+     * [contributed by BSI for PDF/A-1 support]
+     * </p>
+     */
+    public static final JRPdfExporterParameter PDF_STRUCT_TREE_ROOT = new JRPdfExporterParameter("PDF Structure Tree Root");
+
+    /**
+     * <p>
+     * [contributed by BSI for PDF/A-1 support]
+     * </p>
+     */
+    public static final JRPdfExporterParameter PDF_MARK_INFO = new JRPdfExporterParameter("PDF Mark Info");
+
+    /**
+     * <p>
+     * [contributed by BSI for PDF/A-1 support]
+     * </p>
+     * Sets the transparency blending colorspace to RGB. The default blending
+     * colorspace is CMYK and will result in faded colors in the screen and in
+     * printing. Calling this method will return the RGB colors to what is
+     * expected.
+     * 
+     * The value is {@link Boolean}: true to set the transparency blending
+     * colorspace to RGB, false to use the default blending colorspace
+     */
+    public static final JRPdfExporterParameter PDF_RGB_TRANSPARENCY_BLENDING = new JRPdfExporterParameter("PDF RGB transparency blending");
+
+    // <<< modification BSI Business Systems Integration AG 20110701 (code to
+    // support PDF/A-1)
 }
